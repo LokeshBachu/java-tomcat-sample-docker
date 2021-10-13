@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3'
 
 services:
   distro:
@@ -11,7 +11,7 @@ services:
     image: postgres:latest
     container_name: postgres_db
     volumes:
-      - ../dumps:/tmp/
+      - data:/var/lib/postgresql
     ports:
       - "5432:5432"
   web:
@@ -20,10 +20,13 @@ services:
     volumes:
       - ./mysite.template:/etc/nginx/conf.d/mysite.template
     ports:
-      - "8080:80"
+      - "8089:80"
     environment:
       - NGINX_HOST=example.com
       - NGINX_port=80
     links:
       - database:db
       - distro
+volumes:
+  data:
+    external: true
